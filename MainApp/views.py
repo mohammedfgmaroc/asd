@@ -560,7 +560,8 @@ def Workers_managment_edit_view(request, pk):
                 messages.error(request, 'The selected group does not exist.')
         if new_password and username:
             # Send the welcome email
-            send_welcome_email(username, new_password, email)
+            action_value = 2
+            send_welcome_email(request ,username, new_password, email, action_value)
 
         messages.success(request, 'User data updated successfully.')
         return redirect('workers_managment')
@@ -642,7 +643,10 @@ def add_employee(request):
         # Add the user to the selected group
         group = Group.objects.get(name=role)
         user.groups.add(group)
-        
+        if password and username:
+            # Send the welcome email
+            action_value = 1
+            send_welcome_email(request ,username, password, email, action_value)
         return redirect('workers_managment')  # Redirect to the workers management page
     
     # If the request method is GET, render the workers_managment.html template
@@ -873,9 +877,13 @@ def view_all_users_history(request):
 
     return render(request, 'all_users_history.html', context)
 
-def send_welcome_email(username, password, recipient_email):
-    subject = 'Welcome to Our Website'
-    message = f'Your username: {username}\nYour password: {password}'
+def send_welcome_email(request ,username, password, recipient_email, action_value):
+    user = request.user
+    if action_value == 1:
+        subject = 'Votre inscription sur le site Infra a été effectuée par M. '+ user.last_name +' '+ user.first_name
+    elif action_value == 2:
+        subject = 'Des modifications de coordonnées sur votre compte on  été effectuée par M. '+ user.last_name +' '+ user.first_name
+    message = f'Nom d\'utilisateur: {username}\nMot de passe: {password}'
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [recipient_email]
 
