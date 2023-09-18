@@ -141,10 +141,14 @@ def data_visualization_view(request):
         
         
         file_name = request.GET.get('selected_filename', '')
-        written_year = request.GET.get('written_year', '')
-        if file_name and written_year:
+        match = re.search(r'RV(\d{4})', file_name)
+        # Vérifiez si une correspondance a été trouvée
+        if match:
+            # Le groupe 1 (le premier groupe capturé) contient les 4 chiffres
+            year = match.group(1)
+        if file_name and year:
             request.session['selected_filename'] = file_name
-            request.session['written_year'] = written_year
+            request.session['year'] = year
             file_path = os.path.join(media_directory, file_name)
             # Perform operations on the file (e.g., read data from Excel and process it).
             df = pd.read_excel(file_path)
@@ -164,7 +168,7 @@ def data_visualization_view(request):
             messages.success(request, "Fichier séléctionner avec succée !")
             return render(request, 'data_visualization.html', context)
         filename = request.session.get('selected_filename', '')
-        year = request.session.get('written_year', '')
+        year = request.session.get('year', '')
         if filename and year:
 
             file_path = os.path.join(media_directory, filename)
