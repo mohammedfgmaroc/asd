@@ -569,7 +569,9 @@
     <div class="outer-container">
 
         
-            <h2> Fichier filtré</h2>
+        <h2> Fichier filtré</h2>
+    </div>
+    <div class="outer-container">
             <!-- Content for the first container -->
                 <div class="horizontal-scroll-container">
                     
@@ -642,16 +644,21 @@
                     </table>
                     
                 </div> 
+        </div>
+        <div class="outer-container">
                 {% if filename and filtre1 %}
                     <form method="get" action="{% url 'download_filtered_df_as_excel' %}" class="download-form" id="download-form">
                         <input type="text" id="filename1" name="filename1" placeholder="Nom du fichier à télécharger" required>
                         <button type="submit" class="btn btn-primary">Télécharger</button>
                     </form>
                 {% endif %}
-    </div>
-
+               
+        </div>
+    
         <div class="outer-container">
             <h2>Échelle de kilométrage par catégorie ISU {{year}}</h2>
+        </div>
+        <div class="outer-container">
                 <!-- Content for the first container -->
                     <div class="horizontal-scroll-container">
                         
